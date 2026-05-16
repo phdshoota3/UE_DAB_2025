@@ -1,0 +1,60 @@
+  --Basic Selection
+SELECT  
+release_date,
+title 
+ FROM Songs;
+
+SELECT *
+FROM songs
+WHERE release_date BETWEEN '2022-01-01' AND '2022-12-31';
+
+--Filtering
+SELECT *
+FROM songs
+WHERE popularity_score > 80
+AND duration_seconds < 240;
+
+--Pattern Matching
+SELECT *
+FROM Artist
+WHERE artist_name LIKE 'THE%';
+
+--Multiple Conditions
+SELECT *
+FROM Customers
+WHERE join_date LIKE '2022%';
+
+--Calculations and Aliasing
+SELECT SUM(duration_seconds) AS total_length
+FROM songs;
+
+SELECT *
+FROM Total_Length 
+
+--Advanced Filtering
+SELECT *
+FROM Purchases
+ORDER BY price DESC
+LIMIT 5;
+
+--Using Multiple Tables Separately
+SELECT *
+FROM songs
+WHERE popularity_score > 90;
+
+SELECT *
+FROM purchases
+WHERE song_id IN (
+SELECT song_id
+FROM songs
+WHERE popularity_score > 90);
+
+--Range Checking
+SELECT *
+FROM purchases
+WHERE purchase_date BETWEEN '2023-01-01' AND '2023-03-31';
+
+--Advanced Filtering with ORDER BY
+SELECT *
+FROM songs
+WHERE popularity_score >90;

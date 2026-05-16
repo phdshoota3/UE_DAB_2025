@@ -1,0 +1,92 @@
+-- Retrieve titles and publication years of all books after 2000
+Select title, publication_year FROM Books
+WHERE publication_year > 2000
+Order By publication_year DESC;
+
+-- Books with more than 5 copies owned in the fiction genre (genre_id =1)
+SELECT title,copies_owned, genre_id FROM Books
+WHERE genre_id = 1;
+
+--List all Books with Title containing History
+SELECT title FROM books
+WHERE title LIKE '%History%';
+
+--Display loan information with patron details for loans made in Jan 2023
+SELECT
+    l.loan_id,
+    l.checkout_date,
+    l.due_date,
+    p.first_name,
+    p.last_name,
+    p.email
+FROM loans l
+INNER JOIN partrons p
+    ON l.patron_id = p.patron_id
+WHERE l.checkout_date >= '2023-01-01'
+  AND l.checkout_date < '2023-02-01';
+
+--Multi-table JOIN
+SELECT
+  b.title,
+  CONCAT(a.first_name, ' ', a.last_name) AS author_full_name,
+  g.genre_name,
+  l.checkout_date,
+  l.due_date
+FROM loans l
+INNER JOIN books b
+  ON l.book_id = b.book_id
+INNER JOIN authors a
+  ON b.author_id = a.author_id
+INNER JOIN genres g
+  ON b.genre_id = g.genre_id;
+
+--Self JOIN
+SELECT
+    p1.first_name AS patron1_first_name,
+    p1.last_name  AS patron1_last_name,
+    p2.first_name AS patron2_first_name,
+    p2.last_name  AS patron2_last_name,
+    p1.city
+FROM partrons p1
+INNER JOIN partrons p2
+    ON p1.city = p2.city
+   AND p1.patron_id < p2.patron_id;
+ 
+--Multi-table JOIN with filtering:
+SELECT
+    b.title,
+    CONCAT(p.first_name, ' ', p.last_name) AS patron_name,
+    br.branch_name
+FROM books b
+INNER JOIN loans l
+    ON b.book_id = l.book_id
+INNER JOIN partrons p
+    ON l.patron_id = p.patron_id
+INNER JOIN branches br
+    ON l.branch_id = br.branch_id
+WHERE b.genre_id = 1;
+
+--COUNT aggregation:
+SELECT
+    genre_id,
+    COUNT(*) AS book_count
+FROM books
+GROUP BY genre_id;
+
+--Multiple aggregations:
+STUMPED
+
+--Conditions aggregations:
+SELECT
+    p.first_name,
+    p.last_name,
+    COUNT(*) AS overdue_count
+FROM loans l
+INNER JOIN partrons p
+    ON l.patron_id = p.patron_id
+WHERE l.due_date < CURRENT_DATE
+  AND l.return_date 
+GROUP BY p.first_name, p.last_name;
+
+--Time Based Analysis
+Stumped
